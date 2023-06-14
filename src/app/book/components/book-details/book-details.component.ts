@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Book} from '../../model';
 
@@ -10,12 +10,9 @@ import {Book} from '../../model';
   styleUrls: ['./book-details.component.scss']
 })
 export class BookDetailsComponent {
-  readonly book: Book;
-
-  constructor() {
-    this.book = {
-      author: 'Douglas Crockford',
-      title: 'JavaScript. The Good Parts'
-    };
-  }
+  @Input({
+    alias: 'value',
+    required: true
+  })
+  book: Book | undefined;
 }
