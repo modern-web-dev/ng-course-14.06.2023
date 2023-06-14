@@ -7,7 +7,7 @@ import {Book} from '../../model';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './book-details.component.html',
-  styleUrls: ['./book-details.component.scss']
+  styleUrls: ['./book-details.component.scss'],
 })
 export class BookDetailsComponent {
   @Input({

@@ -1,42 +1,24 @@
-import {Component} from '@angular/core';
+import {Component, inject, Injector, OnDestroy} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BookDetailsComponent} from '../book-details/book-details.component';
 import {Book} from '../../model';
+import {BookService} from '../../services/book.service';
+import {map, Observable, Subscription, tap} from 'rxjs';
 
 @Component({
   selector: 'ba-book-overview',
   standalone: true,
   imports: [CommonModule, BookDetailsComponent],
   templateUrl: './book-overview.component.html',
-  styleUrls: ['./book-overview.component.scss']
+  styleUrls: ['./book-overview.component.scss'],
 })
-export class BookOverviewComponent {
-  books: Book[];
+export class BookOverviewComponent implements OnDestroy {
+  readonly books$: Observable<Book[]>;
   selectedBook: Book | null = null;
+  private readonly subscriptions$: Subscription[] = [];
 
-  constructor() {
-    this.books = [
-      {
-        id: 0,
-        author: 'Douglas Crockford',
-        title: 'JavaScript. The Good Parts'
-      },
-      {
-        id: 1,
-        author: 'Tom Hombergs',
-        title: 'Get Your Hands Dirty On Clean Architecture'
-      },
-      {
-        id: 2,
-        author: 'Victor Savkin',
-        title: 'Angular Router'
-      },
-      {
-        id: 3,
-        author: 'Joshua Bloch',
-        title: 'Java Effective Programming'
-      }
-    ];
+  constructor(private readonly books: BookService) {
+    this.books$ = this.books.findAll();
   }
 
   selectBook(book: Book) {
@@ -47,8 +29,15 @@ export class BookOverviewComponent {
     return book === this.selectedBook;
   }
 
-  updateBook(updatedBook: Book) {
-    this.books = this.books.map(book => book.id === updatedBook.id ? updatedBook : book);
-    this.selectedBook = updatedBook;
+  updateBook(bookToUpdate: Book) {
+    this.subscriptions$.push(
+      this.books.updateBook(bookToUpdate).subscribe(updatedBook => {
+        this.selectedBook = updatedBook;
+      })
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions$.forEach(subscription => subscription.unsubscribe());
   }
 }
