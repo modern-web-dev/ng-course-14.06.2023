@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {Book} from '../../model';
 
@@ -15,4 +15,20 @@ export class BookDetailsComponent {
     required: true
   })
   book: Book | undefined;
+
+  @Output()
+  readonly valueChange = new EventEmitter<Book>();
+
+  save(event: Event) {
+    event.preventDefault();
+    const formElement = event.target as HTMLFormElement;
+    const authorInput = formElement.querySelector<HTMLInputElement>('#author');
+    const titleInput = formElement.querySelector<HTMLInputElement>('#title');
+    const changedBook: Book = {
+      id: this.book?.id!,
+      author: authorInput?.value ?? '',
+      title: titleInput?.value ?? ''
+    }
+    this.valueChange.emit(changedBook);
+  }
 }

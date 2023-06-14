@@ -21,9 +21,7 @@
   </div>
   <div class="col">
     <ba-book-details *ngIf="selectedBook"
-                     [value]="selectedBook"></ba-book-details>
+                     [value]="selectedBook"
+                     (valueChange)="updateBook($event)"></ba-book-details>
   </div>
-</div>
-<div>
-  <output>Selected Book: {{selectedBook | json}}</output>
 </div>

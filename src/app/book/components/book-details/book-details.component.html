@@ -1,4 +1,4 @@
-<form>
+<form (submit)="save($event)">
   <div class="mb-3">
     <label for="author" class="form-label">Author:</label>
     <input id="author" class="form-control" [value]="book?.author">
