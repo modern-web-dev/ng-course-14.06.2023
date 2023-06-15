@@ -1,6 +1,6 @@
 import {BookOverviewComponent} from './components/book-overview/book-overview.component';
 import {BookDetailsComponent} from './components/book-details/book-details.component';
-import {ActivatedRouteSnapshot, Route, Router, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, Route, Router} from '@angular/router';
 import {inject} from '@angular/core';
 import {BookService} from './services/book.service';
 import {catchError, throwError} from 'rxjs';
