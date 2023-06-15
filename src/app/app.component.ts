@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BookOverviewComponent} from './book/components/book-overview/book-overview.component';
-import {BookService} from './book/services/book.service';
 
 @Component({
   selector: 'ba-root',
