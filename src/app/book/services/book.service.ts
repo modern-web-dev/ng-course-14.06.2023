@@ -1,25 +1,27 @@
-import {Book} from '../model';
+import {Book, BookProperties} from '../model';
 import {BehaviorSubject, Observable} from 'rxjs';
 
 export class BookService {
+  private idSeq = 0;
+
   private booksSubject = new BehaviorSubject<Book[]>([
     {
-      id: 0,
+      id: this.idSeq++,
       author: 'Douglas Crockford',
       title: 'JavaScript. The Good Parts'
     },
     {
-      id: 1,
+      id: this.idSeq++,
       author: 'Tom Hombergs',
       title: 'Get Your Hands Dirty On Clean Architecture'
     },
     {
-      id: 2,
+      id: this.idSeq++,
       author: 'Victor Savkin',
       title: 'Angular Router'
     },
     {
-      id: 3,
+      id: this.idSeq++,
       author: 'Joshua Bloch',
       title: 'Java Effective Programming'
     }
@@ -58,4 +60,26 @@ export class BookService {
   }
 
 
+  findOne(bookId: number): Observable<Book> {
+    return new Observable(subscriber => {
+      const currentBooks = this.booksSubject.value;
+      const foundBook = currentBooks.find(book => book.id === bookId);
+      if (foundBook) {
+        subscriber.next(foundBook);
+        subscriber.complete();
+      } else {
+        subscriber.error(`Book with ID ${bookId} not found!`);
+      }
+    });
+  }
+
+  createNew(bookProperties: BookProperties): Observable<Book> {
+    return new Observable(subscriber => {
+      const currentBooks = this.booksSubject.value;
+      const newBook: Book = {id: this.idSeq++, ...bookProperties};
+      this.booksSubject.next([...currentBooks, newBook]);
+      subscriber.next(newBook);
+      subscriber.complete();
+    });
+  }
 }

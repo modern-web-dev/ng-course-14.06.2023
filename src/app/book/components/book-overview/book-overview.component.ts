@@ -15,6 +15,7 @@ import {
   takeUntil
 } from 'rxjs';
 import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
   selector: 'ba-book-overview',
@@ -23,64 +24,16 @@ import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
   templateUrl: './book-overview.component.html',
   styleUrls: ['./book-overview.component.scss'],
 })
-export class BookOverviewComponent implements AfterViewInit {
-  @ViewChild('search')
-  searchInput: ElementRef | undefined;
-  searchResults$: Observable<string[]> | undefined;
-
+export class BookOverviewComponent {
   readonly books$: Observable<Book[]>;
-  selectedBook: Book | null = null;
-  // private readonly subscriptions$: Subscription[] = [];
-  // private readonly unsubscribe$ = new Subject<void>();
 
   constructor(private readonly books: BookService,
-              private readonly destroyRef: DestroyRef) {
+              private readonly router: Router,
+              private readonly currentRoute: ActivatedRoute) {
     this.books$ = this.books.findAll();
   }
 
-  selectBook(book: Book) {
-    this.selectedBook = book;
+  goToDetailsOf(book: Book) {
+    this.router.navigate([book.id], {relativeTo: this.currentRoute});
   }
-
-  isBookSelected(book: Book) {
-    return book === this.selectedBook;
-  }
-
-  updateBook(bookToUpdate: Book) {
-    // this.subscriptions$.push(
-      this.books.updateBook(bookToUpdate)
-        .pipe(
-          // takeUntil(this.unsubscribe$),
-          takeUntilDestroyed(this.destroyRef)
-        )
-        .subscribe(updatedBook => {
-        this.selectedBook = updatedBook;
-      })
-    // );
-  }
-
-  // ngOnDestroy(): void {
-  //   // this.subscriptions$.forEach(subscription => subscription.unsubscribe());
-  //   this.unsubscribe$.next();
-  //   this.unsubscribe$.complete();
-  //
-  // }
-
-  ngAfterViewInit(): void {
-    const searchInputElement = this.searchInput?.nativeElement as HTMLInputElement;
-    this.searchResults$ = fromEvent(searchInputElement, 'input')
-      .pipe(
-        debounceTime(500),
-        mapFromEventToTargetValue(),
-        distinctUntilChanged(),
-        switchMap(query => this.books.search(query))
-      )
-  }
-}
-
-function mapFromEventToTargetValue(): OperatorFunction<Event, string> {
-  return map(event => {
-    const input = event.target as HTMLInputElement;
-    return input.value;
-  })
 }

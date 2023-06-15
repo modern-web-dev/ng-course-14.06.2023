@@ -1,35 +1,17 @@
-<section>
-  <input id="search" class="form-control-lg" #search>
-</section>
-<output>
-  <ul>
-    <li *ngFor="let result of searchResults$ | async">{{result}}</li>
-  </ul>
-</output>
-<div class="row">
-  <div class="col-8">
-    <table class="table">
-      <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Author</th>
-        <th scope="col">Title</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr *ngFor="let book of (books$ | async); index as i"
-          [class.table-primary]="isBookSelected(book)"
-          (click)="selectBook(book)">
-        <th scope="row">{{i + 1}}</th>
-        <td>{{book.author}}</td>
-        <td>{{book.title}}</td>
-      </tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="col">
-    <ba-book-details *ngIf="selectedBook"
-                     [value]="selectedBook"
-                     (valueChange)="updateBook($event)"></ba-book-details>
-  </div>
-</div>
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Author</th>
+    <th scope="col">Title</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let book of (books$ | async); index as i"
+      (click)="goToDetailsOf(book)">
+    <th scope="row">{{i + 1}}</th>
+    <td>{{book.author}}</td>
+    <td>{{book.title}}</td>
+  </tr>
+  </tbody>
+</table>
