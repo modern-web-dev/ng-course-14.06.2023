@@ -1,0 +1,30 @@
+<form (submit)="save($event)" [formGroup]="bookForm">
+    <div formGroupName="author">
+      <span
+        *ngIf="bookForm.get('author')?.hasError('maxLengthFullName')">{{bookForm.get('author')?.getError('maxLengthFullName')}}</span>
+        <div class="mb-3">
+            <label for="firstName" class="form-label">FirstName:</label>
+            <input id="firstName" class="form-control" formControlName="firstName">
+            <ba-validation-message [of]="bookForm.get('author.firstName')"></ba-validation-message>
+        </div>
+        <div class="mb-3">
+            <label for="lastName" class="form-label">LastName:</label>
+            <input id="lastName" class="form-control" formControlName="lastName">
+            <ba-validation-message class="invalid-feedback"
+                                   [of]="bookForm.get('author.lastName')"></ba-validation-message>
+        </div>
+    </div>
+    <div formGroupName="details">
+        <div class="mb-3">
+            <label for="pages" class="form-label">pages:</label>
+            <input id="pages" class="form-control" formControlName="pages">
+            <ba-validation-message [of]="bookForm.get('details.pages')"></ba-validation-message>
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="title" class="form-label">Title:</label>
+        <input id="title" class="form-control" formControlName="title">
+        <ba-validation-message [of]="bookForm.get('title')"></ba-validation-message>
+    </div>
+    <button class="btn btn-primary" [disabled]="bookForm.invalid">Save</button>
+</form>

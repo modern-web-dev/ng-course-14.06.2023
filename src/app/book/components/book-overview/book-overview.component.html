@@ -1,24 +1,5 @@
-<div class="mb-3">
-  <input id="typeahead" class="form-control" [formControl]="typeaheadControl">
-</div>
-<ul>
-  <li *ngFor="let book of  (typeaheadBooks$ | async)">{{book}}</li>
-</ul>
-User input: {{this.typeaheadControl.value}}
-<table class="table table-hover">
-  <thead>
-  <tr>
-    <th scope="col">#</th>
-    <th scope="col">Author</th>
-    <th scope="col">Title</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let book of (books$ | async); index as i"
-      (click)="goToDetailsOf(book)">
-    <th scope="row">{{i + 1}}</th>
-    <td>{{book.author}}</td>
-    <td>{{book.title}}</td>
-  </tr>
-  </tbody>
-</table>
+<ba-card-panel title="Book overview">
+  <ba-typeahead></ba-typeahead>
+  <ba-book-table [books]="books$ | async" (bookClicked)="goToDetailsOf($event)"></ba-book-table>
+</ba-card-panel>
+

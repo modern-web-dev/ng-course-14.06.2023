@@ -1,0 +1,3 @@
+<span *ngIf="control?.hasError('required')">Please enter a message in the textarea.</span>
+<span *ngIf="control?.hasError('minLength')">{{control?.getError('minLength')}}</span>
+<span *ngIf="control?.hasError('minlength')">Too short.</span>

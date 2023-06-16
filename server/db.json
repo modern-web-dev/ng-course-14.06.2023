@@ -2,23 +2,50 @@
   "books": [
     {
       "id": 0,
-      "author": "Douglas Crockford",
-      "title": "JavaScript. The Good Parts"
-    },
-    {
-      "id": 1,
-      "author": "Tom Hombergs",
+      "author": {
+        "firstName": "Tomekkkkkkk",
+        "lastName": "Hombergs"
+      },
+      "details": {
+        "pages": "15611111111"
+      },
       "title": "Get Your Hands Dirty On Clean Architecture"
     },
     {
-      "id": 2,
-      "author": "Victor Savkin",
-      "title": "Angular Router"
+      "id": 1,
+      "title": "JavaScript. The Good Parts",
+      "author": {
+        "firstName": "Douglas",
+        "lastName": "Crockford"
+      },
+      "details": {
+        "pages": "180"
+      }
     },
     {
-      "id": 3,
-      "author": "Joshua Bloch",
-      "title": "Java Effective Programming"
+      "id": 2,
+      "title": "Lord of the Rings",
+      "author": {
+        "firstName": "J.R.R.",
+        "lastName": "Tolkien"
+      },
+      "details": {
+        "pages": 1178,
+        "language": "English",
+        "cover": "soft"
+      },
+      "publishDate": "2018"
+    },
+    {
+      "author": {
+        "firstName": "New Bookkkk",
+        "lastName": "New Book"
+      },
+      "details": {
+        "pages": "1000000000"
+      },
+      "title": "New Booksss",
+      "id": 3
     }
   ]
 }

@@ -1,0 +1,6 @@
+<div class="mb-3">
+  <input id="typeahead" class="form-control" [formControl]="typeaheadControl">
+</div>
+<ul>
+  <li *ngFor="let book of  (typeaheadBooks$ | async)">{{book}}</li>
+</ul>
