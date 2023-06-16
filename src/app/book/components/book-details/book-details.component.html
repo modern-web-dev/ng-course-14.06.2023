@@ -1,14 +1,39 @@
-<form (submit)="save($event)">
+<form (submit)="save($event)" [formGroup]="bookForm">
   <div class="mb-3">
     <label for="author" class="form-label">Author:</label>
-    <input id="author" class="form-control" [value]="book?.author">
+
+    <!--    <input id="author" class="form-control {{ bookForm.get('author')?.errors ? 'is-invalid' : ''}}" formControlName="author"  >-->
+    <!--    <input  class="form-control"-->
+    <!--           [class.is-invalid]="bookForm.get('author')?.errors"-->
+    <!--    id="author"-->
+    <!--    formControlName="author"-->
+    <!--           [class.is-valid]="!bookForm.get('author')?.errors">-->
+    <input id="author" class="form-control" formControlName="author"
+           [ngClass]="{
+         'is-invalid':bookForm.get('author')?.errors,
+         'is-valid': !bookForm.get('author')?.errors
+        }">
+    <div class="invalid-feedback">
+      <span *ngIf="bookForm.get('author')?.hasError('required')">Please enter a message in the textarea.</span>
+      <span *ngIf="bookForm.get('author')?.hasError('minlength')">Too short.</span>
+    </div>
   </div>
   <div class="mb-3">
     <label for="title" class="form-label">Title:</label>
-    <input id="title" class="form-control" [value]="book?.title">
+    <input id="title" class="form-control" formControlName="title" [ngClass]="{
+         'is-invalid':bookForm.get('title')?.errors,
+         'is-valid': !bookForm.get('title')?.errors
+        }">
+    <div class="invalid-feedback">
+      <span *ngIf="bookForm.get('title')?.hasError('required')">Please enter a message in the textarea.</span>
+      <span *ngIf="bookForm.get('title')?.hasError('minlength')">Too short.</span>
+    </div>
   </div>
-  <button class="btn btn-primary">Save</button>
+  <button class="btn btn-primary" [disabled]="bookForm.invalid" >Save</button>
 </form>
 
 
-<button class="btn btn-primary" (click)="persisted=!persisted">Persisted on/off</button>
+{{bookForm.value | json}}
+{{bookForm.getRawValue() | json}}
+
+<button (click)="doIt()">Test</button>
