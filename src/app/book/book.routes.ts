@@ -1,11 +1,12 @@
 import {BookOverviewComponent} from './components/book-overview/book-overview.component';
 import {BookDetailsComponent} from './components/book-details/book-details.component';
-import {ActivatedRouteSnapshot, Route, Router} from '@angular/router';
-import {inject} from '@angular/core';
-import {BookService} from './services/book.service';
-import {catchError, throwError} from 'rxjs';
+import {Route} from '@angular/router';
+import {bookResolver} from "./book.resolver";
+import {notPersistedGuard} from "./not-persisted.guard";
 
-const bookIdParamName = 'bookId';
+
+// url: books/new
+export const bookIdParamName = 'bookId';
 export const bookRoutes: Route = {
   path: 'books',
   children: [
@@ -15,31 +16,16 @@ export const bookRoutes: Route = {
     },
     {
       path: 'new',
-      component: BookDetailsComponent
+      component: BookDetailsComponent,
+      canDeactivate: [notPersistedGuard]
     },
     {
       path: `:${bookIdParamName}`,
       component: BookDetailsComponent,
       resolve: {
-        book: (route: ActivatedRouteSnapshot) => {
-          const router = inject(Router);
-          const bookIdAsString = route.params[bookIdParamName];
-          const bookId = +bookIdAsString;
-          if (isNaN(bookId)) {
-            setTimeout(() => router.navigateByUrl('/books/new'));
-            return throwError(() => new Error(`Could not parse "${bookIdAsString}" as Book ID`));
-          } else {
-            const books = inject(BookService);
-            return books.findOne(bookId)
-              .pipe(
-                catchError(error => {
-                  setTimeout(() => router.navigateByUrl('/books/new'));
-                  return throwError(() => error);
-                })
-              );
-          }
-        }
-      }
+        book: bookResolver
+      },
+      canDeactivate: [notPersistedGuard]
     }
   ]
 };
