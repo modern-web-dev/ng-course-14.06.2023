@@ -3,6 +3,7 @@ import {provideBooks} from './book/book.config';
 import {provideRouter, withComponentInputBinding} from '@angular/router';
 import {bookRoutes} from './book/book.routes';
 import {NotFoundComponent} from './portal/components/not-found/not-found.component';
+import {provideHttpClient} from "@angular/common/http";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -13,6 +14,7 @@ export const appConfig: ApplicationConfig = {
       ],
       withComponentInputBinding()
     ),
-    provideBooks()
+    provideBooks(),
+    provideHttpClient()
   ]
 };
