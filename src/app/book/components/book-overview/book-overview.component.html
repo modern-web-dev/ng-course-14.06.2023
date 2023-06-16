@@ -1,3 +1,10 @@
+<div class="mb-3">
+  <input id="typeahead" class="form-control" [formControl]="typeaheadControl">
+</div>
+<ul>
+  <li *ngFor="let book of  (typeaheadBooks$ | async)">{{book}}</li>
+</ul>
+User input: {{this.typeaheadControl.value}}
 <table class="table table-hover">
   <thead>
   <tr>
@@ -15,6 +22,3 @@
   </tr>
   </tbody>
 </table>
-
-
-{{typeaheadTest$ | async | json}}
