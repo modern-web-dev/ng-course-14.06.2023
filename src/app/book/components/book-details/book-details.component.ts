@@ -16,6 +16,8 @@ export class BookDetailsComponent {
   @Input()
   book: Book | undefined;
 
+  persisted = true;
+
   constructor(
     private readonly books: BookService,
     private readonly router: Router,
@@ -39,5 +41,9 @@ export class BookDetailsComponent {
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(() => this.router.navigate(['..'], {relativeTo: this.currentRoute}));
+  }
+
+  isPersisted(): boolean {
+    return this.persisted;
   }
 }

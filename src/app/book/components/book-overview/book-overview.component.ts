@@ -1,20 +1,9 @@
-import {AfterViewInit, Component, DestroyRef, ElementRef, OnDestroy, ViewChild} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {BookDetailsComponent} from '../book-details/book-details.component';
 import {Book} from '../../model';
 import {BookService} from '../../services/book.service';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  fromEvent,
-  map,
-  Observable,
-  OperatorFunction,
-  Subject,
-  switchMap,
-  takeUntil
-} from 'rxjs';
-import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
+import {Observable} from 'rxjs';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Component({
@@ -26,11 +15,13 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class BookOverviewComponent {
   readonly books$: Observable<Book[]>;
+  readonly typeaheadTest$: Observable<Book[]>;
 
   constructor(private readonly books: BookService,
               private readonly router: Router,
               private readonly currentRoute: ActivatedRoute) {
     this.books$ = this.books.findAll();
+    this.typeaheadTest$ = this.books.search('to');
   }
 
   goToDetailsOf(book: Book) {
