@@ -1,6 +1,6 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {CommonModule} from '@angular/common';
-import {debounceTime, map, Observable, switchMap} from "rxjs";
+import {debounceTime, filter, map, merge, Observable, switchMap, tap} from "rxjs";
 import {FormControl, ReactiveFormsModule} from "@angular/forms";
 import {Book} from "../../../model";
 import {BookService} from "../../../services/book.service";
@@ -15,13 +15,24 @@ import {BookService} from "../../../services/book.service";
 export class TypeaheadComponent {
   typeaheadControl = new FormControl('', {nonNullable: true});
   typeaheadBooks$: Observable<string[]>;
+  loading = false;
 
   constructor(private readonly books: BookService) {
-    this.typeaheadBooks$ = this.typeaheadControl.valueChanges.pipe(
-      // filter((query) => query.length > 2),
+    const emptyBooks$ = this.typeaheadControl.valueChanges.pipe(
+      filter((query) => query.length === 0),
+      map((books: string): string[] => []),
+    );
+
+    const newBooks$ = this.typeaheadControl.valueChanges.pipe(
+      filter((query) => query.length > 0),
+      tap(() => this.loading = true),
       debounceTime(500),
       switchMap((query) => this.books.search(query)),
-      map((books: Book[]) => books.map(book => `${book.author.firstName} ${book.author.lastName}`))
-    )
+      map((books: Book[]) => books.map(book => `${book.author.firstName} ${book.author.lastName}`)),
+      tap(() => this.loading = false),
+    );
+
+
+    this.typeaheadBooks$ = merge(emptyBooks$, newBooks$)
   }
 }

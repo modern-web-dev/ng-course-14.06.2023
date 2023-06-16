@@ -16,4 +16,5 @@ export class ValidationMessageComponent {
 
   @Input({alias: 'of', required: true})
   control!: AbstractControl | null
+
 }
