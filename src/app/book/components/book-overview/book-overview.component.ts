@@ -17,7 +17,7 @@ import {FormControl, ReactiveFormsModule} from "@angular/forms";
 export class BookOverviewComponent {
   readonly books$: Observable<Book[]>;
 
-  typeaheadControl = new FormControl('default wartość', {nonNullable: true});
+  typeaheadControl = new FormControl('', {nonNullable: true});
   typeaheadBooks$: Observable<string[]>;
 
   constructor(private readonly books: BookService,
@@ -28,13 +28,13 @@ export class BookOverviewComponent {
       // filter((query) => query.length > 2),
       debounceTime(500),
       switchMap((query) => this.books.search(query)),
-      map((books: Book[]) => books.map(book => book.author))
+      map((books: Book[]) => books.map(book => `${book.author.firstName} ${book.author.lastName}`))
     )
 
   }
 
 
   goToDetailsOf(book: Book) {
-    this.router.navigate([book.id], {relativeTo: this.currentRoute});
+    void this.router.navigate([book.id], {relativeTo: this.currentRoute});
   }
 }

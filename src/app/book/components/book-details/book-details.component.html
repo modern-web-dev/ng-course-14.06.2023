@@ -1,21 +1,47 @@
 <form (submit)="save($event)" [formGroup]="bookForm">
-  <div class="mb-3">
-    <label for="author" class="form-label">Author:</label>
-
-    <!--    <input id="author" class="form-control {{ bookForm.get('author')?.errors ? 'is-invalid' : ''}}" formControlName="author"  >-->
-    <!--    <input  class="form-control"-->
-    <!--           [class.is-invalid]="bookForm.get('author')?.errors"-->
-    <!--    id="author"-->
-    <!--    formControlName="author"-->
-    <!--           [class.is-valid]="!bookForm.get('author')?.errors">-->
-    <input id="author" class="form-control" formControlName="author"
-           [ngClass]="{
-         'is-invalid':bookForm.get('author')?.errors,
-         'is-valid': !bookForm.get('author')?.errors
+  <div formGroupName="author">
+      <span
+        *ngIf="bookForm.get('author')?.hasError('maxLengthFullName')">{{bookForm.get('author')?.getError('maxLengthFullName')}}</span>
+    <div class="mb-3">
+      <label for="firstName" class="form-label">FirstName:</label>
+      <input id="firstName" class="form-control" formControlName="firstName"
+             [ngClass]="{
+           'is-invalid':bookForm.get('author.firstName')?.errors,
+           'is-valid': !bookForm.get('author.firstName')?.errors
+          }">
+      <div class="invalid-feedback">
+        <span
+          *ngIf="bookForm.get('author.firstName')?.hasError('required')">Please enter a message in the textarea.</span>
+        <span
+          *ngIf="bookForm.get('author.firstName')?.hasError('minLength')">{{bookForm.get('author.firstName')?.getError('minLength')}}</span>
+        <span *ngIf="bookForm.get('author.firstName')?.hasError('minlength')">Too short.</span>
+      </div>
+    </div>
+    <div class="mb-3">
+      <label for="lastName" class="form-label">LastName:</label>
+      <input id="lastName" class="form-control" formControlName="lastName" [ngClass]="{
+         'is-invalid':bookForm.get('author.lastName')?.errors,
+         'is-valid': !bookForm.get('author.lastName')?.errors
         }">
-    <div class="invalid-feedback">
-      <span *ngIf="bookForm.get('author')?.hasError('required')">Please enter a message in the textarea.</span>
-      <span *ngIf="bookForm.get('author')?.hasError('minlength')">Too short.</span>
+      <div class="invalid-feedback">
+        <span
+          *ngIf="bookForm.get('author.lastName')?.hasError('required')">Please enter a message in the textarea.</span>
+        <span *ngIf="bookForm.get('author.lastName')?.hasError('minlength')">Too short.</span>
+      </div>
+    </div>
+  </div>
+  <div formGroupName="details">
+    <div class="mb-3">
+      <label for="pages" class="form-label">pages:</label>
+      <input id="pages" class="form-control" formControlName="pages"
+             [ngClass]="{
+           'is-invalid':bookForm.get('details.pages')?.errors,
+           'is-valid': !bookForm.get('details.pages')?.errors
+          }">
+      <div class="invalid-feedback">
+        <span *ngIf="bookForm.get('details.pages')?.hasError('required')">Please enter a message in the textarea.</span>
+        <span *ngIf="bookForm.get('details.pages')?.hasError('minlength')">Too short.</span>
+      </div>
     </div>
   </div>
   <div class="mb-3">
@@ -29,7 +55,7 @@
       <span *ngIf="bookForm.get('title')?.hasError('minlength')">Too short.</span>
     </div>
   </div>
-  <button class="btn btn-primary" [disabled]="bookForm.invalid" >Save</button>
+  <button class="btn btn-primary" [disabled]="bookForm.invalid">Save</button>
 </form>
 
 
